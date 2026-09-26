@@ -19,6 +19,7 @@ public class PlayerAim : MonoBehaviour
     public float maxAngleWhileMoving = 45f; // maks avvik fra kroppens retning for å løfte våpen mens man går
 
     private float currentWeight = 0f;
+    private PlayerShoot playerShoot;
 
     public bool isAiming => Mouse.current.rightButton.isPressed;
     public Vector3 AimDirection { get; private set; }
@@ -29,6 +30,7 @@ public class PlayerAim : MonoBehaviour
         animator = GetComponent<Animator>();
         mainCamera = Camera.main;
         playerMovement = GetComponent<PlayerMovement>();
+        playerShoot = GetComponent<PlayerShoot>(); // hent referansen
     }
 
     void Start()
@@ -39,15 +41,18 @@ public class PlayerAim : MonoBehaviour
 
     void Update()
     {
-        bool shouldLift = isAiming;
+        bool shouldLift = isAiming || (playerShoot != null && playerShoot.IsReloading);
 
-        // Mens man beveger seg, krev at siktevinkelen stemmer noenlunde med kroppens retning
         if (isAiming && playerMovement != null && playerMovement.IsMoving)
         {
             float angle = Vector3.Angle(transform.forward, AimDirection);
             if (angle > maxAngleWhileMoving)
                 shouldLift = false;
         }
+
+        // Reload skal alltid løfte fullt, uansett vinkel-sjekken over
+        if (playerShoot != null && playerShoot.IsReloading)
+            shouldLift = true;
 
         float targetWeight = shouldLift ? 1f : 0f;
         float speed = shouldLift ? increaseSpeed : decreaseSpeed;

@@ -3,7 +3,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 40f;
-    public float lifeTime = 3f; // ødelegges automatisk etter X sekunder
+    public float lifeTime = 3f;
+    public float baseDamage = 20f;
 
     void Start()
     {
@@ -17,8 +18,18 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Traff: " + other.name);
-        // Her legger vi til skade senere
+        Hitbox hitbox = other.GetComponent<Hitbox>();
+
+        if (hitbox != null)
+        {
+            float damage = baseDamage * hitbox.damageMultiplier;
+            hitbox.ownerHealth.TakeDamage(damage, hitbox.bodyPart);
+        }
+        else
+        {
+            Debug.Log("Traff noe uten hitbox: " + other.name);
+        }
+
         Destroy(gameObject);
     }
 }

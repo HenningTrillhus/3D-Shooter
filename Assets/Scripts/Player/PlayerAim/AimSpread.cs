@@ -24,6 +24,14 @@ public class AimSpread : MonoBehaviour
 
     private float aimTimer = 0f;
 
+    [Header("Recoil (skyting øker spredningen midlertidig)")]
+    public float recoilPerShot = 4f;    // hvor mye spread øker per skudd
+    public float recoilMax = 15f;       // tak på hvor mye recoil kan bygge seg opp
+    public float recoilDecaySpeed = 10f; // hvor fort recoil-bidraget avtar igjen
+
+    private float currentRecoil = 0f;
+
+
     void Awake()
     {
         playerAim = GetComponent<PlayerAim>();
@@ -32,12 +40,10 @@ public class AimSpread : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log($"Spread: {CurrentSpread}, IsAiming: {playerAim.isAiming}, IsMoving: {playerMovement.IsMoving}, IsCrouching: {playerMovement.IsCrouching}");
         float targetSpread;
 
         if (!playerAim.isAiming)
         {
-            // Hofteskyting
             targetSpread = hipFireSpread;
             aimTimer = 0f;
 
@@ -46,22 +52,30 @@ public class AimSpread : MonoBehaviour
         }
         else
         {
-            // Sikter - bygger presisjon over tid, men kun mens man står stille
             if (!playerMovement.IsMoving)
                 aimTimer += Time.deltaTime;
             else
-                aimTimer = 0f; // beveger seg mens man sikter -> mister opparbeidet presisjon
+                aimTimer = 0f;
 
             float t = Mathf.Clamp01(aimTimer / aimInTime);
             targetSpread = Mathf.Lerp(aimSpreadMax, aimSpreadMin, t);
 
             if (playerMovement.IsMoving)
-                targetSpread += movingSpreadAddition * 0.5f; // litt mindre straff enn hofteskyting siden man tross alt sikter
+                targetSpread += movingSpreadAddition * 0.5f;
 
             if (playerMovement.IsCrouching)
                 targetSpread *= crouchSpreadMultiplier;
         }
 
+        targetSpread += currentRecoil; // <-- nytt: legg til recoil-bidraget
+
         CurrentSpread = Mathf.MoveTowards(CurrentSpread, targetSpread, spreadChangeSpeed * Time.deltaTime);
+
+        currentRecoil = Mathf.MoveTowards(currentRecoil, 0f, recoilDecaySpeed * Time.deltaTime); // <-- nytt: recoil avtar
+    }
+
+    public void AddRecoil()
+    {
+        currentRecoil = Mathf.Min(currentRecoil + recoilPerShot, recoilMax);
     }
 }

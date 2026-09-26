@@ -45,6 +45,8 @@ public class AimConeVisual : MonoBehaviour
         float t = Mathf.InverseLerp(spreadAtVisualMin, spreadAtVisualMax, aimSpread.CurrentSpread);
         float angle = Mathf.Lerp(visualMinAngle, visualMaxAngle, t);
 
+        //Debug.Log($"CurrentSpread: {aimSpread.CurrentSpread}, t: {t}, angle: {angle}");
+
         leftPivot.localEulerAngles = new Vector3(leftBaseX, -angle, leftBaseZ);
         rightPivot.localEulerAngles = new Vector3(rightBaseX, angle, rightBaseZ);
     }
