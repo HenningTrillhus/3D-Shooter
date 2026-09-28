@@ -24,6 +24,9 @@ public class Bullet : MonoBehaviour
         {
             float damage = baseDamage * hitbox.damageMultiplier;
             hitbox.ownerHealth.TakeDamage(damage, hitbox.bodyPart);
+
+            if (HitFeedbackUI.Instance != null)
+                HitFeedbackUI.Instance.ShowHit(hitbox.bodyPart, other.transform.position);
         }
         else
         {

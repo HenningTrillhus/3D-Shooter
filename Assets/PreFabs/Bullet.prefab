@@ -108,7 +108,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -134,43 +134,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.102
+      value: -3.7284665
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.009415984
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.4383913
+      value: -14.414301
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9914449
+      value: 0.9922257
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.009364013
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.13052616
+      value: 0.12407734
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0.0023022795
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 1.097
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 15
+      value: 14.254
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -0.129
       objectReference: {fileID: 0}
     - target: {fileID: 202720465162253700, guid: 13dd423399771324996eb8231849ac9c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -277,10 +277,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5.5
-  m_Height: 11
+  m_Radius: 7.7113495
+  m_Height: 20.872484
   m_Direction: 1
-  m_Center: {x: 8, y: 3, z: 0}
+  m_Center: {x: 5.3750005, y: 3.0869744, z: 4.834898}
 --- !u!114 &7768990021848242604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,5 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f8eb0f1b75b5e469ae54935374bbe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
-  speed: 60
+  speed: 90
   lifeTime: 3
+  baseDamage: 20

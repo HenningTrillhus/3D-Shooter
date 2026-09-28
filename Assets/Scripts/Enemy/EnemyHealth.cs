@@ -6,6 +6,11 @@ public class EnemyHealth : MonoBehaviour
     private float currentHealth;
     private Animator animator;
 
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -18,14 +23,18 @@ public class EnemyHealth : MonoBehaviour
     {
         currentHealth -= amount;
         Debug.Log($"Traff {bodyPart}, tok {amount} skade. HP igjen: {currentHealth}");
-        if (bodyPart == BodyPart.Head)
+
+        if (bodyPart == BodyPart.Head || bodyPart == BodyPart.Neck)
         {
             animator.SetTrigger("HitHead");
         }
-        if (bodyPart == BodyPart.Torso)
+        if (bodyPart == BodyPart.Chest || bodyPart == BodyPart.Heart || bodyPart == BodyPart.Stomach)
         {
             animator.SetTrigger("HitChest");
         }
+        EnemyController controller = GetComponent<EnemyController>();
+        if (controller != null)
+            controller.EnterUnderAttack();
 
         if (currentHealth <= 0f)
         {
@@ -37,7 +46,15 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log(gameObject.name + " døde");
         animator.SetTrigger("Die");
-        // her kan vi senere legge til dødsanimasjon, loot, effekter osv.
-        //Destroy(gameObject, 3f); // forsinket ødeleggelse for å la dødsanimasjonen spille ferdig
+
+        EnemyPatrol patrol = GetComponent<EnemyPatrol>();
+        if (patrol != null)
+            patrol.enabled = false;
+
+        EnemyController controller = GetComponent<EnemyController>();
+        if (controller != null)
+            controller.enabled = false;
+
+        // Destroy(gameObject); // fjernet - enemyen skal bli liggende, ikke forsvinne
     }
 }

@@ -3,7 +3,14 @@ using UnityEngine;
 public enum BodyPart
 {
     Head,
-    Torso
+    Neck,
+    Chest,
+    Heart,
+    Stomach,
+    RightArm,
+    LeftArm,
+    RightLeg,
+    LeftLeg,
 }
 
 public class Hitbox : MonoBehaviour

@@ -27,11 +27,13 @@ public class PlayerShoot : MonoBehaviour
 
     private Animator animator;
     private AimSpread aimSpread;
+    private PlayerAim playerAim;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         aimSpread = GetComponent<AimSpread>();
+        playerAim = GetComponent<PlayerAim>();
         currentAmmo = magazineSize;
         UpdateAmmoUI();
     }
@@ -46,13 +48,15 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame && Time.time >= nextFireTime && currentAmmo > 0)
+        if (Mouse.current.leftButton.wasPressedThisFrame
+            && playerAim.isAiming
+            && Time.time >= nextFireTime
+            && currentAmmo > 0)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
         }
     }
-
     void Shoot()
     {
         currentAmmo--;
@@ -60,8 +64,6 @@ public class PlayerShoot : MonoBehaviour
 
         float randomAngle = Random.Range(-aimSpread.CurrentSpread / 2f, aimSpread.CurrentSpread / 2f);
         Quaternion spreadRotation = Quaternion.AngleAxis(randomAngle, Vector3.up);
-
-        // Bruk transform.forward (kroppens retning) som basis - samme som de visuelle stripene
         Quaternion baseRotation = Quaternion.LookRotation(transform.forward);
         Quaternion bulletRotation = spreadRotation * baseRotation;
 
@@ -79,6 +81,28 @@ public class PlayerShoot : MonoBehaviour
             CameraFollow.Instance.Shake(0.15f, 0.3f);
 
         aimSpread.AddRecoil();
+
+        NotifyNearbyEnemies(); // nytt
+    }
+
+    void NotifyNearbyEnemies()
+    {
+        float noiseRadius = 100f;
+        Collider[] hits = Physics.OverlapSphere(transform.position, noiseRadius);
+
+        Debug.Log("Fant " + hits.Length + " colliders innenfor radius");
+
+        foreach (Collider hit in hits)
+        {
+            Debug.Log("Sjekker: " + hit.name);
+
+            EnemyController controller = hit.GetComponentInParent<EnemyController>();
+            if (controller != null)
+            {
+                Debug.Log("Fant EnemyController på: " + controller.name);
+                controller.EnterUnderAttack();
+            }
+        }
     }
 
     IEnumerator Reload()
